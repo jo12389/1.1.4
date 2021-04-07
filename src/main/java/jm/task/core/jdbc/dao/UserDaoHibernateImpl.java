@@ -21,7 +21,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        String sql = "CREATE TABLE IF NOT EXISTS `mydbtest`.`new_table` (\n" +
+        String sql = "CREATE TABLE IF NOT EXISTS `mydbtest`.`user` (\n" +
                 "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
                 "  `name` VARCHAR(45) NOT NULL,\n" +
                 "  `lastname` VARCHAR(45) NOT NULL,\n" +
@@ -40,7 +40,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        String sql = "DROP TABLE if exists mydbtest.new_table";
+        String sql = "DROP TABLE if exists mydbtest.user";
         Query query = session.createSQLQuery(sql).addEntity(User.class);
         query.executeUpdate();
 
@@ -51,15 +51,14 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
         Session session = Util.getSessionFactory().openSession();
-        User user = new User(name, lastName, age);
-        user.setId(1L);
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
 
-        try {
+        User user = new User(name,lastName,age);
+
             session.save(user);
+            transaction.commit();
             System.out.printf("The user %s %s has been successfully added\n", name, lastName);
-        } catch (Exception e) {
-            System.out.printf("Trying to add user %s %s... FAIL!", name, lastName);
-        }
 
         session.close();
     }
@@ -87,7 +86,7 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         Session session = Util.getSessionFactory().openSession();
-        String sql = "SELECT * FROM mydbtest.new_table";
+        String sql = "SELECT * FROM mydbtest.user";
         Query query = session.createNativeQuery(sql).addEntity(User.class);
 
         List <User> userList = query.list();
@@ -100,7 +99,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        String sql = "DELETE FROM mydbtest.new_table";
+        String sql = "DELETE FROM mydbtest.user";
 
         Query query = session.createNativeQuery(sql);
 
