@@ -10,8 +10,7 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-    Session session = Util.getSessionFactory().openSession();
-    Transaction transaction = session.beginTransaction();
+
     public UserDaoHibernateImpl() {
 
     }
