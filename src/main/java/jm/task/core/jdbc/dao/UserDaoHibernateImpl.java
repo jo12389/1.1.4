@@ -5,8 +5,6 @@ import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -49,6 +47,18 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
+        Transaction transaction = null;
+        try (Session session = Util.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(new User(name, lastName, age));
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
+   /* public void saveUser(String name, String lastName, byte age) {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
         transaction = session.beginTransaction();
@@ -60,7 +70,7 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.printf("The user %s %s has been successfully added\n", name, lastName);
 
         session.close();
-    }
+    }*/
 
 
     @Override

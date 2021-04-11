@@ -17,18 +17,18 @@ public class Main  {
 
             userService.createUsersTable();
 
-            userService.saveUser("Aleksandr", "Kurma", (byte) 99);
+           userService.saveUser("Aleksandr", "Kurma", (byte) 99);
            userService.saveUser("James", "Gosling", (byte) 65);
             userService.saveUser("Sergei", "Nikonov", (byte) 1);
 
-            List<User> userList = userService.getAllUsers();
+
+             List<User> userList = userService.getAllUsers();
             for (User user : userList) {
                 System.out.println(user.toString());
             }
             userService.cleanUsersTable();
             userService.dropUsersTable();
-        System.out.println();
-        System.out.println();
+
 
 
     }
