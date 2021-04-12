@@ -5,14 +5,13 @@ import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
 
     public UserDaoHibernateImpl() {
-
     }
-
 
     @Override
     public void createUsersTable() {
@@ -47,30 +46,15 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        Transaction transaction = null;
-        try (Session session = Util.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(new User(name, lastName, age));
-            transaction.commit();
-        } catch (Exception ex) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-    }
-   /* public void saveUser(String name, String lastName, byte age) {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
         transaction = session.beginTransaction();
-
-        User user = new User(name,lastName,age);
-
-            session.save(user);
-            transaction.commit();
-            System.out.printf("The user %s %s has been successfully added\n", name, lastName);
-
+        User user = new User(name, lastName, age);
+        session.save(user);
+        transaction.commit();
+        System.out.printf("The user %s %s has been successfully added\n", name, lastName);
         session.close();
-    }*/
+    }
 
 
     @Override
@@ -97,10 +81,8 @@ public class UserDaoHibernateImpl implements UserDao {
         Session session = Util.getSessionFactory().openSession();
         String sql = "SELECT * FROM mydbtest.user";
         Query query = session.createNativeQuery(sql).addEntity(User.class);
-
-        List <User> userList = query.list();
+        List<User> userList = query.list();
         session.close();
-
         return userList;
     }
 
@@ -109,9 +91,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         String sql = "DELETE FROM mydbtest.user";
-
         Query query = session.createNativeQuery(sql);
-
         try {
             query.executeUpdate();
             transaction.commit();

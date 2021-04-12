@@ -1,4 +1,3 @@
-
 package jm.task.core.jdbc.model;
 
 import javax.persistence.*;
@@ -9,18 +8,14 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
-
     @Column
     private String name;
-
     @Column
     private String lastName;
-
     @Column
     private Byte age;
 
     public User() {
-
     }
 
     public User(String name, String lastName, Byte age) {
@@ -28,6 +23,7 @@ public class User {
         this.lastName = lastName;
         this.age = age;
     }
+
     public User(Long id, String name, String lastName, Byte age) {
         this.id = id;
         this.name = name;
@@ -76,6 +72,5 @@ public class User {
                 ", age=" + age +
                 '}';
     }
-
 }
 
